@@ -57,7 +57,7 @@ class LoginRequiredMiddleware:
                 pass
             path = request.path_info.lstrip('/')
             from dojo.models import Dojo_User
-            if Dojo_User.force_password_reset(request.user) and path != 'change_password':
+            if Dojo_User.force_password_reset(request.session, request.user) and path != 'change_password':
                 return HttpResponseRedirect(reverse('change_password'))
 
         response = self.get_response(request)

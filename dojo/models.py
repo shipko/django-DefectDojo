@@ -174,8 +174,12 @@ class Dojo_User(User):
         return hasattr(user, 'usercontactinfo') and user.usercontactinfo.block_execution
 
     @staticmethod
-    def force_password_reset(user):
-        return hasattr(user, 'usercontactinfo') and user.usercontactinfo.force_password_reset
+    def force_password_reset(session, user):
+        key = "force_password_reset"
+        if session.get(key, None) is None:
+            session[key] = hasattr(user, 'usercontactinfo') and user.usercontactinfo.force_password_reset
+
+        return session.get(key)
 
     def disable_force_password_reset(user):
         if hasattr(user, 'usercontactinfo'):
